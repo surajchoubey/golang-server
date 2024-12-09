@@ -23,7 +23,7 @@ func main() {
 
 	router := mux.NewRouter()
 	routes.RegisterRoutes(router, db)
-	defer db.Close()
+	// defer db.Close()
 
 	fmt.Println("Server has started ✅")
 	http.ListenAndServe(":8000", jsonContentTypeMiddleware(router))

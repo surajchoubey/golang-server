@@ -1,15 +1,18 @@
 package database
 
 import (
-	"database/sql"
 	"fmt"
 	"log"
+
+	"gorm.io/driver/postgres"
+	"gorm.io/gorm"
 )
 
-func Connect() *sql.DB {
+func Connect() *gorm.DB {
 	// connect to database
-	DATABASE_URL := "postgres://localhost:5432/practice?sslmode=disable"
-	db, err := sql.Open("postgres", DATABASE_URL) // os.Getenv("DATABASE_URL")
+	// DATABASE_URL := "postgres://localhost:5432/practice?sslmode=disable"
+	DATABASE_URL := "host=localhost dbname=practice port=5432 sslmode=disable"
+	db, err := gorm.Open(postgres.Open(DATABASE_URL), &gorm.Config{}) // os.Getenv("DATABASE_URL")
 	if err != nil {
 		log.Fatal(err)
 		fmt.Println("Database connection failed ❌")

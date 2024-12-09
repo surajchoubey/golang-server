@@ -4,19 +4,17 @@ import (
 	"api/models"
 	"api/services"
 	"api/utils"
-	"database/sql"
 	"encoding/json"
-	"fmt"
 	"net/http"
 
 	"github.com/gorilla/mux"
+	"gorm.io/gorm"
 )
 
 // GET ALL USERS
-func GetUsersController(db *sql.DB) http.HandlerFunc {
+func GetUsersController(db *gorm.DB) http.HandlerFunc {
 	return func(w http.ResponseWriter, r *http.Request) {
 		users, err := services.FetchUsers(db)
-		fmt.Println(users, err)
 		if err != nil {
 			utils.SendErrorResponse(w, http.StatusInternalServerError, "Failed to fetch users")
 		}
@@ -25,7 +23,7 @@ func GetUsersController(db *sql.DB) http.HandlerFunc {
 }
 
 // GET USER
-func GetUserController(db *sql.DB) http.HandlerFunc {
+func GetUserController(db *gorm.DB) http.HandlerFunc {
 	return func(w http.ResponseWriter, r *http.Request) {
 		vars := mux.Vars(r)
 		id := vars["id"]
@@ -38,7 +36,7 @@ func GetUserController(db *sql.DB) http.HandlerFunc {
 }
 
 // CREATE USER
-func CreateUserController(db *sql.DB) http.HandlerFunc {
+func CreateUserController(db *gorm.DB) http.HandlerFunc {
 	return func(w http.ResponseWriter, r *http.Request) {
 		var u models.User
 		json.NewDecoder(r.Body).Decode(&u)
@@ -54,7 +52,7 @@ func CreateUserController(db *sql.DB) http.HandlerFunc {
 }
 
 // UPDATE USER
-func UpdateUserController(db *sql.DB) http.HandlerFunc {
+func UpdateUserController(db *gorm.DB) http.HandlerFunc {
 	return func(w http.ResponseWriter, r *http.Request) {
 
 		var u models.User
@@ -73,7 +71,7 @@ func UpdateUserController(db *sql.DB) http.HandlerFunc {
 }
 
 // DELETE USER
-func DeleteUserController(db *sql.DB) http.HandlerFunc {
+func DeleteUserController(db *gorm.DB) http.HandlerFunc {
 	return func(w http.ResponseWriter, r *http.Request) {
 		vars := mux.Vars(r)
 		id := vars["id"]
